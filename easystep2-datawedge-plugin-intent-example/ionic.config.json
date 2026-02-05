@@ -1,0 +1,7 @@
+{
+  "name": "easystep2-datawedge-plugin-intent-example",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
