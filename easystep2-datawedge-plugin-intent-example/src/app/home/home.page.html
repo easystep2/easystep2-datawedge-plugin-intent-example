@@ -16,6 +16,10 @@
                   [color]="(isInitialized$ | async) ? 'success' : 'warning'"></ion-icon>
         <span>{{ statusMessage$ | async }}</span>
       </div>
+      <div class="status-row profile-row" *ngIf="isInitialized$ | async">
+        <ion-icon name="checkmark-circle" color="success"></ion-icon>
+        <span>DataWedge Profile: <strong>{{ profileName }}</strong></span>
+      </div>
     </ion-card-content>
   </ion-card>
 

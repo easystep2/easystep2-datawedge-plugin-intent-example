@@ -13,7 +13,8 @@ dependencies {
     implementation project(':capacitor-haptics')
     implementation project(':capacitor-keyboard')
     implementation project(':capacitor-status-bar')
-    implementation "androidx.core:core:1.1.0"
+    implementation project(':com-easystep2-datawedge-plugin-intent-capacitor')
+
 }
 
 
