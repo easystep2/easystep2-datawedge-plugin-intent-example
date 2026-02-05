@@ -1,7 +1,71 @@
-<ion-content [fullscreen]="true">
-  <div id="container">
-    <ion-button class="center-button" size="large"  color="primary" (click)="showAlert()">
-      CLICK ME!!
-    </ion-button>
-  </div>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>DataWedge Scanner Test</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Status Card -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Status</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="status-row">
+        <ion-icon [name]="(isInitialized$ | async) ? 'checkmark-circle' : 'hourglass'" 
+                  [color]="(isInitialized$ | async) ? 'success' : 'warning'"></ion-icon>
+        <span>{{ statusMessage$ | async }}</span>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Last Scan Card -->
+  <ion-card class="scan-card">
+    <ion-card-header>
+      <ion-card-title>Last Scanned Barcode</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="scan-result" *ngIf="lastScan$ | async as scan; else noScan">
+        <div class="barcode-data">{{ scan.data }}</div>
+        <div class="barcode-info">
+          <span class="label-type">Type: {{ scan.labelType }}</span>
+          <span class="timestamp">{{ scan.timestamp | date:'HH:mm:ss' }}</span>
+        </div>
+      </div>
+      <ng-template #noScan>
+        <div class="no-scan">
+          <ion-icon name="barcode-outline" size="large"></ion-icon>
+          <p>Scan a barcode to see the result here</p>
+        </div>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Scan History Card -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Scan History
+        <ion-button fill="clear" size="small" (click)="clearHistory()" *ngIf="(scanHistory$ | async)?.length">
+          <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngIf="(scanHistory$ | async)?.length; else noHistory">
+        <ion-item *ngFor="let scan of scanHistory$ | async; let i = index" lines="full">
+          <ion-label>
+            <h2>{{ scan.data }}</h2>
+            <p>{{ scan.labelType }} - {{ scan.timestamp | date:'HH:mm:ss' }}</p>
+          </ion-label>
+          <ion-badge slot="end" color="medium">{{ i + 1 }}</ion-badge>
+        </ion-item>
+      </ion-list>
+      <ng-template #noHistory>
+        <div class="no-history">
+          <p>No scans yet</p>
+        </div>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
